@@ -6,6 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask_mysqldb import MySQL
 from flask_ckeditor import CKEditor
 import secrets
+import requests
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -128,6 +129,40 @@ def delete_blog(id):
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
+
+
+@app.route('/weather')
+def weather():
+    cities = ['Uman\'', 'Winnipeg', 'Kyiv', 'Okhtyrka']
+    api_key = 'ff659fcd92d95f0e223bec0e9ad745bc'
+
+    # список, де зберігаємо інформацію про погоду для кожного міста
+    weather_data = []
+
+    # цикл по кожному місту, щоб отримати інформацію про погоду
+    for city in cities:
+        # формуємо URL для запиту до API OpenWeatherMap
+        url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric'
+
+        # виконуємо запит до API і зберігаємо відповідь в змінну response
+        response = requests.get(url)
+
+        # отримуємо JSON-об'єкт з відповіддю API
+        json_data = response.json()
+        # дістаємо потрібні дані про погоду з JSON-об'єкту
+        city_weather = {
+            'city': city,
+            'temperature': json_data['main']['temp'],
+            'description': json_data['weather'][0]['description'],
+            'icon': json_data['weather'][0]['icon'],
+            'feel': json_data['main']['feels_like']
+        }
+
+        # додаємо інформацію про погоду для цього міста в список weather_data
+        weather_data.append(city_weather)
+
+    # відображаємо шаблон і передаємо список з інформацією про погоду для кожного міста
+    return render_template('weather.html', weather_data=weather_data)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@
 {% if blogs %}
     {% for blog in blogs %}
         <h3><a href="/blogs/{{ blog['blog_id'] }}"> {{ blog['title'] }} </a></h3>
-        <h5>Написано {{ blog['author'] }} </h5>
+        <h7 class="font-italic">by {{ blog['author'] }} </h7>
 
         <hr>
     {% endfor %}
