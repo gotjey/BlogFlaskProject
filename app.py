@@ -5,10 +5,12 @@ import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_mysqldb import MySQL
 from flask_ckeditor import CKEditor
+import secrets
 
 app = Flask(__name__)
 Bootstrap(app)
 CKEditor(app)
+secret_key = secrets.token_urlsafe(32)
 
 db = yaml.safe_load(open('db.yaml'))
 app.config['MYSQL_USER'] = db['mysql_user']
@@ -56,8 +58,8 @@ def register():
         cursor = mysql.connection.cursor()
         cursor.execute(
             'INSERT INTO users(first_name, last_name, user_name, email, password) VALUES(%s, %s, %s, %s, %s)', (
-            user_details['firstname'], user_details['lastname'], user_details['username'], user_details['email'],
-            generate_password_hash(user_details['password'])))
+                user_details['firstname'], user_details['lastname'], user_details['username'], user_details['email'],
+                generate_password_hash(user_details['password'])))
         mysql.connection.commit()
         cursor.close()
         flash('Реєстрація успішна! Тепер залогінься', 'success')
