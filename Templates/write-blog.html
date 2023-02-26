@@ -1,0 +1,20 @@
+{% extends 'my_base.html' %}
+
+{% block sub_content %}
+<div>
+    <h1>Напишіть свій пост!</h1>
+</div>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="title">Заголовок</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Напишіть заголовок">
+    </div>
+    <div class="form-group">
+        <label for="body">Текст поста</label>
+        <textarea type="text" class="form-control ckeditor" id="body" name="body" placeholder="Ваш текст"> </textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock sub_content %}
