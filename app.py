@@ -111,29 +111,61 @@ def write_blog():
     return render_template('write-blog.html')
 
 
-@app.route('/my-blogs')
+@app.route("/my-blogs/")
 def my_blogs():
-    return render_template('my-blogs.html')
+    author = session["first_name"] + " " + session["last_name"]
+    cursor = mysql.connection.cursor()
+    result_value = cursor.execute("SELECT * FROM blog WHERE author = %s", [author])
+    if result_value > 0:
+        my_blogs = cursor.fetchall()
+        return render_template("my-blogs.html", my_blogs=my_blogs)
+    else:
+        return render_template("my-blogs.html", my_blogs=None)
 
 
-@app.route('/edit-blog/<int:id>', methods=['GET', 'POST'])
+@app.route("/edit-blog/<int:id>", methods=["GET", "POST"])
 def edit_blog(id):
-    return render_template('edit-blog.html', id_num=id)
+    if request.method == "POST":
+        cursor = mysql.connection.cursor()
+        title = request.form["title"]
+        body = request.form["body"]
+        cursor.execute(
+            "UPDATE blog SET title = %s, bode = %s WHERE blog_id = %s",
+            (title, body, id),
+        )
+        mysql.connection.commit()
+        cursor.close()
+        flash("Blog is updated successfully!", "success")
+        return redirect("/blogs/{}".format(id))
+    cursor = mysql.connection.cursor()
+    result_value = cursor.execute("SELECT * FROM blog WHERE blog_id = {}".format(id))
+    if result_value > 0:
+        blog = cursor.fetchone()
+        blog_form = {}
+        blog_form["title"] = blog["title"]
+        blog_form["body"] = blog["bode"]
+        return render_template("edit-blog.html", blog_form=blog_form)
 
 
-@app.route('/delete-blog/<int:id>', methods=['GET', 'POST'])
+@app.route("/delete-blog/<int:id>")
 def delete_blog(id):
-    return render_template('delete-blog.html', id_num=id)
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM blog WHERE blog_id = {}".format(id))
+    mysql.connection.commit()
+    flash("Your blog has been deleted!", "success")
+    return redirect("/my-blogs")
 
 
-@app.route('/logout')
+@app.route("/logout/")
 def logout():
-    return render_template('logout.html')
+    session.clear()
+    flash("You have been logged out!", "info")
+    return redirect("/")
 
 
 @app.route('/weather')
 def weather():
-    cities = ['Uman\'', 'Kyiv', 'Okhtyrka', 'Winnipeg', 'Toronto', 'Halifax']
+    cities = ['Uman\'', 'Kyiv', 'Okhtyrka', 'Winnipeg', 'Toronto', 'Halifax', 'Warsaw', 'Paris']
     api_key = 'ff659fcd92d95f0e223bec0e9ad745bc'
     weather_data = []
 
