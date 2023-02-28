@@ -1,9 +1,43 @@
-{% extends 'my_base.html' %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Погода</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
 
-{% block sub_content %}
-    {% for city in weather_data %}
-        <h2>Погода в {{ city['city'] }}</h2>
-        <p>Температура: {{ city['temperature'] }}&deg;C</p>
-        <p>Відчувається як: {{ city['feel'] }}&deg;C </p>
-    {% endfor %}
-{% endblock sub_content %}
+
+<div class="portfolio">
+    <div class="container">
+        <h2 class="portfolio-header">Погода</h2>
+
+        <!--portfolio-cards-wrapper-->
+        <div class="portfolio-cards-wrapper">
+            {% for city in weather_data %}
+
+            <!--card-->
+            <div class="card">
+                <a href="https://github.com/gotjey/PedestrianGame.git"> <img class="card-img"
+                                                                             src="http://openweathermap.org/img/w/{{city['icon']}}.png"
+                                                                             alt="Pedestrian game"> </a>
+                <a href="https://github.com/gotjey/PedestrianGame.git">
+                    <h3 class="card-title"> {{ city['city'] }}</h3>
+                </a>
+                <p>Температура: {{ city['temperature'] }}&deg;C</p>
+                <p>Відчувається як: {{ city['feel'] }}&deg;C </p>
+            </div>
+            <!--//card-->
+            {% endfor %}
+        </div>
+        <!--//portfolio-cards-wrapper-->
+    </div>
+</div>
+
+
+</body>
+</html>

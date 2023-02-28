@@ -133,7 +133,7 @@ def logout():
 
 @app.route('/weather')
 def weather():
-    cities = ['Uman\'', 'Winnipeg', 'Kyiv', 'Okhtyrka']
+    cities = ['Uman\'', 'Kyiv', 'Okhtyrka', 'Winnipeg', 'Toronto', 'Halifax']
     api_key = 'ff659fcd92d95f0e223bec0e9ad745bc'
     weather_data = []
 
@@ -149,7 +149,12 @@ def weather():
             'feel': json_data['main']['feels_like']
         }
         weather_data.append(city_weather)
-    return render_template('weather.html', weather_data=weather_data)
+    return render_template('weather_alternative.html', weather_data=weather_data)
+
+
+@app.route('/weather2')
+def weather2():
+    return render_template('weather_alternative.html')
 
 
 if __name__ == '__main__':
