@@ -149,12 +149,7 @@ def weather():
             'feel': json_data['main']['feels_like']
         }
         weather_data.append(city_weather)
-    return render_template('weather_alternative.html', weather_data=weather_data)
-
-
-@app.route('/weather2')
-def weather2():
-    return render_template('weather_alternative.html')
+    return render_template('weather.html', weather_data=weather_data)
 
 
 if __name__ == '__main__':
