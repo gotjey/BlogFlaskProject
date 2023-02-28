@@ -143,7 +143,7 @@ def weather():
         json_data = response.json()
         city_weather = {
             'city': city,
-            'temperature': json_data['main']['temp'],
+            'temperature': round(json_data['main']['temp'], 1),
             'description': json_data['weather'][0]['description'],
             'icon': json_data['weather'][0]['icon'],
             'feel': json_data['main']['feels_like']
