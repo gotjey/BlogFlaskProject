@@ -1,0 +1,9 @@
+{% extends 'my_base.html' %}
+
+{% block sub_content %}
+    {% for city in weather_data %}
+        <h2>Погода в {{ city['city'] }}</h2>
+        <p>Температура: {{ city['temperature'] }}&deg;C</p>
+        <p>Відчувається як: {{ city['feel'] }}&deg;C </p>
+    {% endfor %}
+{% endblock sub_content %}
