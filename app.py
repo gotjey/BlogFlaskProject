@@ -7,6 +7,8 @@ from flask_mysqldb import MySQL
 from flask_ckeditor import CKEditor
 import secrets
 import requests
+from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -165,24 +167,43 @@ def logout():
 
 @app.route('/weather')
 def weather():
-    cities = ['Uman\'', 'Kyiv', 'Okhtyrka', 'Ottawa', 'Toronto', 'Slupca', 'Warsaw', 'Paris']
+    cities = ['Uman', 'Kyiv', 'Okhtyrka', 'Ottawa', 'Toronto', 'Slupca', 'Warsaw', 'Paris']
     api_key = 'ff659fcd92d95f0e223bec0e9ad745bc'
     weather_data = []
+
+    timezone_offsets = {
+        'Uman': 'Europe/Kiev',
+        'Kyiv': 'Europe/Kiev',
+        'Okhtyrka': 'Europe/Kiev',
+        'Ottawa': 'America/Toronto',
+        'Toronto': 'America/Toronto',
+        'Slupca': 'Europe/Warsaw',
+        'Warsaw': 'Europe/Warsaw',
+        'Paris': 'Europe/Paris'
+    }
 
     for city in cities:
         url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric'
         response = requests.get(url)
         json_data = response.json()
+
+        if city in timezone_offsets:
+            timezone = pytz.timezone(timezone_offsets[city])
+            local_time = datetime.now(timezone).strftime('%H:%M:%S')
+        else:
+            local_time = 'N/A'
+
         city_weather = {
             'city': city,
             'temperature': round(json_data['main']['temp'], 1),
+            'time': local_time,
             'description': json_data['weather'][0]['description'],
             'icon': json_data['weather'][0]['icon'],
             'feel': json_data['main']['feels_like']
         }
         weather_data.append(city_weather)
-    return render_template('weather.html', weather_data=weather_data)
 
+    return render_template('weather.html', weather_data=weather_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
