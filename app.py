@@ -25,7 +25,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
 
-@app.route('/')
+@app.route('/blog')
 def index():
     cursor = mysql.connection.cursor()
     result_value = cursor.execute("SELECT * FROM blog")
@@ -165,9 +165,10 @@ def logout():
     return redirect("/")
 
 
-@app.route('/weather')
+@app.route('/')
+# @app.route('/weather')
 def weather():
-    cities = ['Uman', 'Kyiv', 'Okhtyrka', 'Ottawa', 'Toronto', 'Slupca', 'Warsaw', 'Paris']
+    cities = ['Uman', 'Kyiv', 'Okhtyrka', 'Ottawa', 'Toronto', 'Slupca', 'Calgary', 'Paris']
     api_key = 'ff659fcd92d95f0e223bec0e9ad745bc'
     weather_data = []
 
@@ -178,7 +179,7 @@ def weather():
         'Ottawa': 'America/Toronto',
         'Toronto': 'America/Toronto',
         'Slupca': 'Europe/Warsaw',
-        'Warsaw': 'Europe/Warsaw',
+        'Calgary': 'America/Regina',
         'Paris': 'Europe/Paris'
     }
 

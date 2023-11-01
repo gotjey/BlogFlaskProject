@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+</head>
+<body>
+    <h1>Salary calculator</h1>
+    <form method="post">
+        <label for="num1">Salary:</label>
+        <input type="number" id="num1" name="num1" required>
+        <br>
+        <input type="radio" id="add" name="operation" value="add" required>
+        <label for="add">to GROSS</label>
+        <br>
+        <input type="radio" id="subtract" name="operation" value="subtract" required>
+        <label for="subtract">to NET</label>
+        <br>
+        <input type="submit" value="result">
+    </form>
+
+    {% if result is not none %}
+        <h2>Результат:</h2>
+        <p>{{ num1 }} {{ operation }} 2 = {{ result }}</p>
+    {% endif %}
+</body>
+</html>
