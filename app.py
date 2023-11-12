@@ -168,7 +168,7 @@ def logout():
 @app.route('/')
 # @app.route('/weather')
 def weather():
-    cities = ['Uman', 'Kyiv', 'Okhtyrka', 'Ottawa', 'Toronto', 'Slupca', 'Calgary', 'Paris']
+    cities = ['Uman', 'Kyiv', 'Okhtyrka', 'Ottawa', 'Toronto', 'Slupca', 'Calgary', 'Saint John']
     api_key = 'ff659fcd92d95f0e223bec0e9ad745bc'
     weather_data = []
 
@@ -180,7 +180,7 @@ def weather():
         'Toronto': 'America/Toronto',
         'Slupca': 'Europe/Warsaw',
         'Calgary': 'America/Regina',
-        'Paris': 'Europe/Paris'
+        'Saint John': 'America/Halifax'
     }
 
     for city in cities:
